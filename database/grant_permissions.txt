@@ -1,0 +1,3 @@
+create user 'springuser'@'%' identified by 'ThePassword';
+
+grant all on tie_db.* to 'springuser'@'%';
