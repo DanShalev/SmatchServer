@@ -1,24 +1,27 @@
 package com.tie.model.dao;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@ToString
+@Data
 @Table(name = "Users")
 public class User {
 
     @Id
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "uId", insertable = false, updatable = false, nullable = false)
+    private UUID uId;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "sex")
+    private String sex;
+
+    @Column(name = "age")
+    private String age;
 
 }
