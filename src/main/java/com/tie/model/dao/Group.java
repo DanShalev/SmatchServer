@@ -13,11 +13,11 @@ import lombok.Data;
 public class Group {
 
     @Id
-    @Column(name = "group_id")
-    private String groupId;
+    @Column(name = "id")
+    private String id;
 
-    @Column(name = "group_name")
-    private String groupName;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "description")
     private String description;
