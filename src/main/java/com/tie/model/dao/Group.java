@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -28,15 +29,8 @@ public class Group {
     private String description;
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(mappedBy = "group")
     private Set<GroupsUsers> subscribedUsers;
 
-    @Override
-    public String toString() {
-        return "Group{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
 }
