@@ -30,12 +30,4 @@ public class GroupsUsers {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Override
-    public String toString() {
-        return "GroupsUsers{" +
-                "id=" + id +
-                ", group=" + group +
-                ", user=" + user +
-                '}';
-    }
 }

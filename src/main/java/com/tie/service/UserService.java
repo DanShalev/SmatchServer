@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User addUser() {
-        User user = createUser(UUID.randomUUID().toString());
+        User user = createUser();
         userRepository.save(user);
         return user;
     }
@@ -26,9 +26,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private User createUser(String id) {
+    private User createUser() {
         User user = new User();
-        user.setId(id);
+        user.setId(UUID.randomUUID().toString());
         return user;
     }
 
