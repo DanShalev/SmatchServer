@@ -4,12 +4,17 @@ package com.tie.model.dao;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
+import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "all_groups")
+@Table(name = "groups_table")
 public class Group {
 
     @Id
@@ -22,5 +27,16 @@ public class Group {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "group")
+    private Set<GroupsUsers> subscribedUsers;
 
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
