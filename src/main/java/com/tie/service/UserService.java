@@ -2,14 +2,12 @@ package com.tie.service;
 
 import com.tie.model.dao.User;
 import com.tie.repository.UserRepository;
+import java.util.List;
+import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,29 +16,20 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void addUser(String phoneNumber){
-        log.info("#addUser - created user with phoneNumber: {}", phoneNumber);
-        if (isUserExists(phoneNumber)){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists");
-        }
-        userRepository.save(createUser(phoneNumber));
-    }
-
-    public List<User> getUsers(){
-        return userRepository.findAll();
-    }
-
-    private User createUser(String phoneNumber){
-        User user = new User();
-        user.setPhoneNumber(phoneNumber);
+    public User addUser() {
+        User user = createUser();
+        userRepository.save(user);
         return user;
     }
 
-    private boolean isUserExists(String phoneNumber){
-        Optional<User> user = userRepository.findAll().stream().filter(currUser -> currUser.getPhoneNumber().equals(phoneNumber)).findAny();
-        return user.isPresent();
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
-
+    private User createUser() {
+        User user = new User();
+        user.setId(UUID.randomUUID().toString());
+        return user;
+    }
 
 }

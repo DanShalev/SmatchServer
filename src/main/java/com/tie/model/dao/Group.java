@@ -1,5 +1,6 @@
 package com.tie.model.dao;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,19 +13,24 @@ import lombok.ToString;
 
 import java.util.Set;
 
-
 @Entity
 @Data
-@Table(name = "users_table")
-public class User {
+@Table(name = "groups_table")
+public class Group {
 
     @Id
     @Column(name = "id")
     private String id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
     @JsonIgnore
     @ToString.Exclude
-    @OneToMany(mappedBy = "user")
-    private Set<GroupsUsers> subscribedGroups;
+    @OneToMany(mappedBy = "group")
+    private Set<GroupsUsers> subscribedUsers;
 
 }
