@@ -3,17 +3,28 @@ package com.tie.model.dao;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
+
+import java.util.Set;
 
 
 @Entity
 @Data
-@Table(name = "Users")
+@Table(name = "users_table")
 public class User {
 
     @Id
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "id")
+    private String id;
+
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user")
+    private Set<GroupsUsers> subscribedGroups;
 
 }
