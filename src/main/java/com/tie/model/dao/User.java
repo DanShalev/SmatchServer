@@ -1,15 +1,10 @@
 package com.tie.model.dao;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.Set;
 
 
@@ -21,6 +16,15 @@ public class User {
     @Id
     @Column(name = "id")
     private String id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "sex")
+    private String sex;
+
+    @Column(name = "age")
+    private int age;
 
     @JsonIgnore
     @ToString.Exclude
