@@ -14,17 +14,17 @@ public class GroupController {
 
     private final GroupService groupService;
 
-    @PostMapping("/addGroup")
+    @PostMapping("/")
     public Group addGroup(@RequestBody Group group) {
         return groupService.addGroup(group);
     }
 
-    @PutMapping("/editGroup")
+    @PutMapping("/")
     public Group editGroup(@RequestBody Group group) {
         return groupService.editGroup(group);
     }
 
-    @GetMapping("/getGroups")
+    @GetMapping("/")
     public List<Group> getGroups() {
         return groupService.getGroups();
     }
