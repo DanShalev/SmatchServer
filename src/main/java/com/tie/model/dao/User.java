@@ -1,15 +1,10 @@
 package com.tie.model.dao;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.util.Set;
 
 
@@ -25,6 +20,6 @@ public class User {
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "user")
-    private Set<GroupsUsers> subscribedGroups;
+    private Set<Subscription> subscriptions;
 
 }
