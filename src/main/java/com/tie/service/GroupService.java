@@ -25,10 +25,7 @@ public class GroupService {
     }
 
     private Subscription getSubscriptionById(SubscriptionId subscriptionId) {
-        return subscriptionRepository.findAll()
-                .stream()
-                .filter(currentSubscription -> currentSubscription.getId().equals(subscriptionId))
-                .findAny()
+        return subscriptionRepository.findSubscriptionById(subscriptionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not subscribed to group"));
     }
 }
