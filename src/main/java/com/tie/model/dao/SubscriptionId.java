@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @Data
-public class GroupsUsersKey implements Serializable {
+public class SubscriptionId implements Serializable {
 
     @Column(name = "user_id")
     private String userId;

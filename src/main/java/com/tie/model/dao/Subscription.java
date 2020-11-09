@@ -14,11 +14,11 @@ import javax.persistence.JoinColumn;
 @Entity
 @Getter
 @Setter
-@Table(name = "groups_users")
-public class GroupsUsers {
+@Table(name = "subscriptions")
+public class Subscription {
 
     @EmbeddedId
-    private GroupsUsersKey id;
+    private SubscriptionId id;
 
     @ManyToOne
     @MapsId("groupId")

@@ -29,6 +29,6 @@ public class User {
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "user")
-    private Set<GroupsUsers> subscribedGroups;
+    private Set<Subscription> subscriptions;
 
 }
