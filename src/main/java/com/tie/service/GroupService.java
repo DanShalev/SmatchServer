@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,10 +25,10 @@ public class GroupService {
     }
 
     private Subscription getSubscriptionById(SubscriptionId subscriptionId) {
-        Optional<Subscription> subscription = subscriptionRepository.findAll()
+        return subscriptionRepository.findAll()
                 .stream()
                 .filter(currentSubscription -> currentSubscription.getId().equals(subscriptionId))
-                .findAny();
-        return subscription.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not subscribed to group"));
+                .findAny()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not subscribed to group"));
     }
 }
