@@ -1,8 +1,8 @@
 package com.tie.service;
 
+import com.tie.model.dao.Group;
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
-import com.tie.model.dao.Group;
 import com.tie.repository.GroupRepository;
 import com.tie.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,8 +30,15 @@ public class GroupService {
     }
 
     public Group editGroup(Group group) {
+        if (isGroupExists(group.getId()))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This group already exists");
         groupRepository.save(group);
         return group;
+    }
+
+    private boolean isGroupExists(String groupId) {
+        Optional<Group> group = groupRepository.findAll().stream().filter(currGroup -> currGroup.getId().equals(groupId)).findAny();
+        return group.isPresent();
     }
 
     public List<Group> getGroups() {
