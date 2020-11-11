@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,15 +29,14 @@ public class GroupService {
     }
 
     public Group editGroup(Group group) {
-        if (isGroupExists(group.getId()))
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This group already exists");
+        if (!isGroupExists(group.getId()))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This group doesn't exists");
         groupRepository.save(group);
         return group;
     }
 
     private boolean isGroupExists(String groupId) {
-        Optional<Group> group = groupRepository.findAll().stream().filter(currGroup -> currGroup.getId().equals(groupId)).findAny();
-        return group.isPresent();
+        return groupRepository.findAll().stream().anyMatch(currGroup -> currGroup.getId().equals(groupId));
     }
 
     public List<Group> getGroups() {
