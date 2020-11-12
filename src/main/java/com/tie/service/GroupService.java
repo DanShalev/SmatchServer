@@ -1,5 +1,6 @@
 package com.tie.service;
 
+import com.tie.model.dao.Group;
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
 import com.tie.repository.GroupRepository;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,27 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final SubscriptionRepository subscriptionRepository;
+
+    public Group addGroup(Group group) {
+        group.setId(UUID.randomUUID().toString());
+        groupRepository.save(group);
+        return group;
+    }
+
+    public Group editGroup(Group group) {
+        if (!isGroupExists(group.getId()))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This group doesn't exists");
+        groupRepository.save(group);
+        return group;
+    }
+
+    private boolean isGroupExists(String groupId) {
+        return groupRepository.findAll().stream().anyMatch(currGroup -> currGroup.getId().equals(groupId));
+    }
+
+    public List<Group> getGroups() {
+        return groupRepository.findAll();
+    }
 
     public void leaveGroup(SubscriptionId subscriptionId) {
         Subscription subscription = getSubscriptionById(subscriptionId);

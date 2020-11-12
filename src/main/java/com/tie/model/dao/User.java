@@ -17,6 +17,15 @@ public class User {
     @Column(name = "id")
     private String id;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "sex")
+    private String sex;
+
+    @Column(name = "age")
+    private int age;
+
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "user")
