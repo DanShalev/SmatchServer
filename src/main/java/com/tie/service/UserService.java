@@ -41,4 +41,9 @@ public class UserService {
         return userGroups.stream().map(Subscription::getGroup).collect(Collectors.toList());
     }
 
+    public User verifyUserExists(String userId) {
+        return userRepository.findUserById(userId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format("User %s doesn't exist.", userId)));
+    }
 }

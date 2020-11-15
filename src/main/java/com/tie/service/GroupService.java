@@ -22,6 +22,7 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final UserService userService;
 
     public Group addGroup(Group group) {
         group.setId(UUID.randomUUID().toString());
@@ -30,15 +31,9 @@ public class GroupService {
     }
 
     public Group editGroup(Group group) {
-        if (!isGroupExists(group.getId())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This group doesn't exists");
-        }
+        verifyGroupExists(group.getId());
         groupRepository.save(group);
         return group;
-    }
-
-    private boolean isGroupExists(String groupId) {
-        return groupRepository.findAll().stream().anyMatch(currGroup -> currGroup.getId().equals(groupId));
     }
 
     public List<Group> getGroups() {
@@ -64,5 +59,30 @@ public class GroupService {
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format("%s is not subscribed to group %s", subscriptionId.getUserId(),
                                 subscriptionId.getGroupId())));
+    }
+
+    private void verifySubscriptionDoesntExist(SubscriptionId subscriptionId) {
+        subscriptionRepository.findSubscriptionById(subscriptionId).ifPresent(
+                sub -> { throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("User %s is already subscribed to group %s.",
+                                                                                                 subscriptionId.getUserId(), subscriptionId.getGroupId())); }
+        );
+    }
+
+    private Group verifyGroupExists(String groupId) {
+        return groupRepository.findGroupById(groupId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format("Group %s doesn't exist.", groupId)));
+    }
+
+    public SubscriptionId addUserToGroup(String groupId, String userId) {
+        User user = userService.verifyUserExists(userId);
+        Group group = verifyGroupExists(groupId);
+
+        SubscriptionId subscriptionId = new SubscriptionId(userId, groupId);
+        verifySubscriptionDoesntExist(subscriptionId);
+
+        Subscription subs = new Subscription(subscriptionId, group, user);
+        subscriptionRepository.save(subs);
+        return subscriptionId;
     }
 }

@@ -47,4 +47,9 @@ public class GroupController {
     public List<User> getGroupUsers(@PathVariable String groupId) {
         return groupService.getGroupUsers(groupId);
     }
+
+    @PostMapping("/{groupId}/{userId}/addUser")
+    public SubscriptionId addUserToGroup(@PathVariable String groupId, @PathVariable String userId) {
+        return groupService.addUserToGroup(groupId, userId);
+    }
 }
