@@ -34,10 +34,6 @@ public class UserService {
 
     public List<Group> getUserGroups(String userId) {
         List<Subscription> userGroups = subscriptionRepository.findSubscriptionsByUserId(userId);
-        if (userGroups.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("User Id %s doesn't exists or isn't in a group", userId));
-        }
         return userGroups.stream().map(Subscription::getGroup).collect(Collectors.toList());
     }
 
