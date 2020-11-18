@@ -14,10 +14,10 @@ import java.io.Serializable;
 @Data
 public class SubscriptionId implements Serializable {
 
-    @Column(name = "user_id")
-    private String userId;
-
     @Column(name = "group_id")
     private String groupId;
+
+    @Column(name = "user_id")
+    private String userId;
 
 }
