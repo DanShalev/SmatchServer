@@ -1,0 +1,21 @@
+1. Import mock table
+--------------------
+Every time someone update the mock table,
+each user will have to load the table locally (only once).
+Once we will have a shared server this won't be needed.
+
+To do so, we will have a shared sql file with all the inserted data, saved at:
+> $BE_git_repo/database/mocks/tie_db_scheme.sql
+
+Just execute it (after running the server, which creates the table) to fill the table with data.
+
+2. Export mock table
+----------------------
+If you update the tables and want to save them and share it,
+You can use the following following command to auto generate sql insertion script:
+
+> /usr/local/mysql/bin/mysqldump -u root -p tie_db > ...yourfullpath../database/mocks/tie_db_scheme.sql
+
+keep in mind you will need to clean it, it contains a lot other sql stuff except table insertion.
+
+Once finished, commit the generated file in your branch.
