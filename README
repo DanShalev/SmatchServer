@@ -7,7 +7,8 @@ Lombok
 
 
 
-Mysql initialization:
+Mysql:
+Initialization:
 
 connect as a root:
 $ sudo mysql --password
@@ -16,7 +17,15 @@ create tie_db:
 $ create database tie_db;
 
 create user for the spring app:
-create user 'springuser'@'%' identified by 'ThePassword';
+$ create user 'springuser'@'%' identified by 'ThePassword';
 
 grant permission for that user:
-grant all on tie_db.* to 'springuser'@'%';
+$ grant all on tie_db.* to 'springuser'@'%';
+
+
+
+Connect to db:
+$ mysql --user="springuser" --password="ThePassword" --database="tie_db"
+
+run tie_db_schema.sql (or path to the file, if your'e not in the directory):
+$ source tie_db_scheme.sql
