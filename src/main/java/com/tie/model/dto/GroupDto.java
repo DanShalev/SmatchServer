@@ -1,17 +1,13 @@
 package com.tie.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class GroupDto {
-
-    public GroupDto(String id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
 
     private String id;
     private String name;

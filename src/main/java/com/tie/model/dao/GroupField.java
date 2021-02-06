@@ -1,30 +1,31 @@
 package com.tie.model.dao;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "group_fields")
-@IdClass(GroupField.class)
-public class GroupField implements Serializable {
+public class GroupField  {
 
-    @Id
-    @Column(name = "group_id")
-    private String groupId;
+    @EmbeddedId
+    private GroupFieldId groupFieldId;
 
-    @Id
-    @Column(name = "field_name")
-    private String fieldName;
+    @ManyToOne
+    @MapsId("groupId")
+    @JoinColumn(name = "group_id")
+    private Group group;
 
 }

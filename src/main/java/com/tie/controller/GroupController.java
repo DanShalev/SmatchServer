@@ -1,6 +1,5 @@
 package com.tie.controller;
 
-import com.tie.model.dao.Group;
 import com.tie.model.dto.GroupDto;
 import com.tie.service.GroupService;
 import java.util.List;

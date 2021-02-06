@@ -2,6 +2,7 @@ package com.tie.service;
 
 import com.tie.model.dao.Group;
 import com.tie.model.dao.GroupField;
+import com.tie.model.dao.GroupFieldId;
 import com.tie.model.dto.GroupDto;
 import com.tie.repository.GroupFieldRepository;
 import com.tie.repository.GroupRepository;
@@ -26,13 +27,14 @@ public class GroupService {
 
     public GroupDto createGroup(GroupDto groupDto) {
         groupDto.setId(UUID.randomUUID().toString());
-        groupDto.getFields().forEach(field -> createField(groupDto.getId(), field));
         groupRepository.save(new Group(groupDto));
+        groupDto.getFields().forEach(field -> createField(groupDto.getId(), field));
         return groupDto;
     }
 
-    private void createField(String groupId, String field) {
-        groupFieldRepository.save(new GroupField(groupId, field));
+    private void createField(String groupId, String fieldName) {
+        Group group = verifyGroupExists(groupId);
+        groupFieldRepository.save(new GroupField(new GroupFieldId(groupId, fieldName), group));
     }
 
     public GroupDto editGroup(GroupDto group) {
@@ -46,10 +48,8 @@ public class GroupService {
     }
 
     private GroupDto convertGroupToGroupDto(Group group) {
-        GroupDto groupDto = new GroupDto(group.getId(), group.getName(), group.getDescription());
-        List<String> groupFields = groupFieldRepository.findAllByGroupId(group.getId()).stream().map(GroupField::getFieldName).collect(Collectors.toList());
-        groupDto.setFields(groupFields);
-        return groupDto;
+        List<String> fields = group.getFields().stream().map(groupField -> groupField.getGroupFieldId().getFieldName()).collect(Collectors.toList());
+        return new GroupDto(group.getId(), group.getName(), group.getDescription(), fields);
     }
 
     Group verifyGroupExists(String groupId) {
