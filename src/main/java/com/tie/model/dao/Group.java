@@ -40,4 +40,10 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private Set<Subscription> subscriptions;
 
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "group")
+    private Set<GroupField> fields;
+
+
 }
