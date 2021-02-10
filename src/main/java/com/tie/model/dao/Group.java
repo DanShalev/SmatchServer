@@ -1,17 +1,13 @@
 package com.tie.model.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import com.tie.model.dto.GroupDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,21 +15,25 @@ import lombok.ToString;
 @Table(name = "groups_table")
 public class Group {
 
-    public Group(GroupDto groupDto) {
-        this.id = groupDto.getId();
-        this.name = groupDto.getName();
-        this.description = groupDto.getDescription();
-    }
-
     @Id
     @Column(name = "id")
     private String id;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @Column(name = "number_of_members")
+    private String numberOfMembers;
+
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
-    private String description;
+    public Group(GroupDto groupDto) {
+        this.id = groupDto.getId();
+        this.name = groupDto.getName();
+        this.avatarUrl = groupDto.getName();
+        this.numberOfMembers = groupDto.getNumberOfMembers();
+    }
 
     @JsonIgnore
     @ToString.Exclude

@@ -6,16 +6,15 @@ import com.tie.model.dao.GroupFieldId;
 import com.tie.model.dto.GroupDto;
 import com.tie.repository.GroupFieldRepository;
 import com.tie.repository.GroupRepository;
-
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,7 @@ public class GroupService {
 
     public GroupDto createGroup(GroupDto groupDto) {
         groupDto.setId(UUID.randomUUID().toString());
+        groupDto.getFields().forEach(field -> createField(groupDto.getId(), field));
         groupRepository.save(new Group(groupDto));
         groupDto.getFields().forEach(field -> createField(groupDto.getId(), field));
         return groupDto;
@@ -49,7 +49,7 @@ public class GroupService {
 
     private GroupDto convertGroupToGroupDto(Group group) {
         List<String> fields = group.getFields().stream().map(groupField -> groupField.getGroupFieldId().getFieldName()).collect(Collectors.toList());
-        return new GroupDto(group.getId(), group.getName(), group.getDescription(), fields);
+        return new GroupDto(group.getId(), group.getName(), group.getAvatarUrl(), group.getNumberOfMembers(), fields);
     }
 
     Group verifyGroupExists(String groupId) {

@@ -10,9 +10,9 @@ import java.util.List;
 public class GroupDto {
 
     private String id;
+    private String avatarUrl;
     private String name;
-    private String description;
+    private String numberOfMembers;
     private List<String> fields;
-
 
 }
