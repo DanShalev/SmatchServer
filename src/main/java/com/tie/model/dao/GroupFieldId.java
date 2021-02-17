@@ -19,4 +19,7 @@ public class GroupFieldId implements Serializable {
 
     @Column(name = "field_name")
     private String fieldName;
+
+    @Column(name = "field_id")
+    private String fieldId;
 }
