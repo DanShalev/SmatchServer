@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,15 +27,14 @@ public class GroupService {
 
     public GroupDto createGroup(GroupDto groupDto) {
         groupDto.setId(UUID.randomUUID().toString());
-        groupDto.getFields().forEach(field -> createField(groupDto.getId(), field));
         groupRepository.save(new Group(groupDto));
-        groupDto.getFields().forEach(field -> createField(groupDto.getId(), field));
+        groupDto.getFields().forEach((fieldId, fieldName) -> createField(groupDto.getId(), fieldId, fieldName));
         return groupDto;
     }
 
-    private void createField(String groupId, String fieldName) {
+    private void createField(String groupId, Integer fieldId, String fieldName) {
         Group group = verifyGroupExists(groupId);
-        groupFieldRepository.save(new GroupField(new GroupFieldId(groupId, fieldName), group));
+        groupFieldRepository.save(new GroupField(new GroupFieldId(groupId, fieldId, fieldName), group));
     }
 
     public GroupDto editGroup(GroupDto group) {
@@ -48,8 +48,8 @@ public class GroupService {
     }
 
     private GroupDto convertGroupToGroupDto(Group group) {
-        List<String> fields = group.getFields().stream().map(groupField -> groupField.getGroupFieldId().getFieldName()).collect(Collectors.toList());
-        return new GroupDto(group.getId(), group.getName(), group.getAvatarUrl(), group.getNumberOfMembers(), fields);
+        Map<Integer, String> fields = groupFieldRepository.findAllByGroupId(group.getId()).stream().collect(Collectors.toMap(groupField -> groupField.getGroupFieldId().getFieldId(), groupField -> groupField.getGroupFieldId().getFieldName()));
+        return new GroupDto(group.getId(), group.getName(), group.getDescription(), group.getNumberOfMembers(), group.getAvatarUrl(), fields);
     }
 
     Group verifyGroupExists(String groupId) {

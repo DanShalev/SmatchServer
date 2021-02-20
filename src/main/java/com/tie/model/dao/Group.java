@@ -15,35 +15,33 @@ import java.util.Set;
 @Table(name = "groups_table")
 public class Group {
 
+    public Group(GroupDto groupDto) {
+        this.id = groupDto.getId();
+        this.name = groupDto.getName();
+        this.description = groupDto.getDescription();
+        this.avatarUrl = groupDto.getAvatarUrl();
+        this.numberOfMembers = groupDto.getNumberOfMembers();
+    }
+
     @Id
     @Column(name = "id")
     private String id;
 
-    @Column(name = "avatar_url")
-    private String avatarUrl;
-
-    @Column(name = "number_of_members")
-    private String numberOfMembers;
-
     @Column(name = "name")
     private String name;
 
-    public Group(GroupDto groupDto) {
-        this.id = groupDto.getId();
-        this.name = groupDto.getName();
-        this.avatarUrl = groupDto.getName();
-        this.numberOfMembers = groupDto.getNumberOfMembers();
-    }
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "number_of_members")
+    private int numberOfMembers;
+
+    @Column(name = "avatar_url")
+    private String avatarUrl;
 
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "group")
     private Set<Subscription> subscriptions;
-
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToMany(mappedBy = "group")
-    private Set<GroupField> fields;
-
 
 }

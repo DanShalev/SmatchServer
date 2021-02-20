@@ -3,16 +3,17 @@ package com.tie.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 public class GroupDto {
 
     private String id;
-    private String avatarUrl;
     private String name;
-    private String numberOfMembers;
-    private List<String> fields;
+    private String description;
+    private int numberOfMembers;
+    private String avatarUrl;
+    private Map<Integer, String> fields;
 
 }
