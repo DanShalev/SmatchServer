@@ -12,7 +12,7 @@ public class GroupDto {
     private String id;
     private String name;
     private String description;
-    private int numberOfMembers;
+    private String numberOfMembers;
     private String avatarUrl;
     private Map<Integer, String> fields;
 

@@ -34,7 +34,7 @@ public class Group {
     private String description;
 
     @Column(name = "number_of_members")
-    private int numberOfMembers;
+    private String numberOfMembers;
 
     @Column(name = "avatar_url")
     private String avatarUrl;

@@ -1,22 +1,33 @@
-INSERT INTO `groups_table` (`id`, `avatar_url`, `name`, `number_of_members`)
-VALUES ('1',
-        'https://materials.technion.ac.il/wp-content/uploads/2020/09/%D7%99%D7%A8%D7%93%D7%9F-%D7%95%D7%A0%D7%95%D7%99.jpg',
+INSERT INTO groups_table (id, name, description, number_of_members, avatar_url)
+VALUES (
+        '1',
         'CS Study Buddies',
-        '53 Members'),
-
-       ('2',
-        'https://cf.bstatic.com/images/hotel/max1024x768/125/125231042.jpg',
+        'Description to be filled',
+        '53 Members',
+        'https://materials.technion.ac.il/wp-content/uploads/2020/09/%D7%99%D7%A8%D7%93%D7%9F-%D7%95%D7%A0%D7%95%D7%99.jpg'
+        ),
+       (
+        '2',
         'Tel Aviv Flatmates',
-        '8,745 Members'),
+        'Description to be filled',
+        '8,745 Members',
+        'https://cf.bstatic.com/images/hotel/max1024x768/125/125231042.jpg'
+        ),
+       (
+        '3',
+        'India Trip Partners',
+        'Description to be filled',
+        '546 Members',
+        'https://thecommonwealth.org/sites/default/files/styles/press_release_large/public/images/hero/taj-mahal-620.jpg?itok=PKSpaEMm'
+        ),
 
-       ('3',
-        'https://thecommonwealth.org/sites/default/files/styles/press_release_large/public/images/hero/taj-mahal-620.jpg?itok=PKSpaEMm',
-        'India Trip Partners', '546 Members'),
-
-       ('4',
-        'https://images2.minutemediacdn.com/image/upload/c_crop,h_1192,w_2119,x_0,y_0/f_auto,q_auto,w_1100/v1554734334/shape/mentalfloss/568122-istock-869062004.jpg',
+       (
+        '4',
         'Personal Trainer',
-        '546 Members');
+        'Description to be filled',
+        '546 Members',
+        'https://images2.minutemediacdn.com/image/upload/c_crop,h_1192,w_2119,x_0,y_0/f_auto,q_auto,w_1100/v1554734334/shape/mentalfloss/568122-istock-869062004.jpg'
+        );
 
 
 INSERT INTO `users_table` (`id`, `age`, `image_url`, `image_url2`, `image_url3`, `name`, `sex`)
