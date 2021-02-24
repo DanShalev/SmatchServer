@@ -70,6 +70,8 @@ VALUES ('1', 28,
 INSERT INTO `subscriptions` (`group_id`, `user_id`)
 VALUES ('1', '1'),
        ('2', '1'),
+       ('3', '1'),
+       ('4', '1'),
        ('4', '10'),
        ('4', '11'),
        ('4', '12'),

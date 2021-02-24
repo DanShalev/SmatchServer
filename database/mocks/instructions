@@ -12,7 +12,7 @@ Just execute it (after running the server, which creates the table) to fill the 
 2. Export mock table
 ----------------------
 If you update the tables and want to save them and share it,
-You can use the following following command to auto generate sql insertion script:
+You can use the following command to auto generate sql insertion script:
 
 > /usr/local/mysql/bin/mysqldump -u root -p tie_db > ...yourfullpath../database/mocks/tie_db_scheme.sql
 
