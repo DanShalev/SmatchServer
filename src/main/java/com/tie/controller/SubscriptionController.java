@@ -1,17 +1,12 @@
 package com.tie.controller;
 
-import com.tie.model.dao.Group;
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
 import com.tie.model.dao.User;
+import com.tie.model.dto.GroupDto;
 import com.tie.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,7 +25,7 @@ public class SubscriptionController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Group> getUserSubscriptions(@PathVariable String userId) {
+    public List<GroupDto> getUserSubscriptions(@PathVariable String userId) {
         return subscriptionService.getUserSubscriptions(userId);
     }
 

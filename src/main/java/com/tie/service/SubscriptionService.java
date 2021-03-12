@@ -1,9 +1,11 @@
 package com.tie.service;
 
+import com.tie.Utils.GroupUtils;
 import com.tie.model.dao.Group;
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
 import com.tie.model.dao.User;
+import com.tie.model.dto.GroupDto;
 import com.tie.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class SubscriptionService {
     private final UserService userService;
     private final GroupService groupService;
     private final SubscriptionRepository subscriptionRepository;
+    private final GroupUtils groupUtils;
 
 
     public void deleteSubscription(SubscriptionId subscriptionId) {
@@ -35,10 +38,12 @@ public class SubscriptionService {
         return groupSubscriptions.stream().map(Subscription::getUser).collect(Collectors.toList());
     }
 
-    public List<Group> getUserSubscriptions(String userId) {
+    public List<GroupDto> getUserSubscriptions(String userId) {
         userService.verifyUserExists(userId);
-        List<Subscription> userGroups = subscriptionRepository.findSubscriptionsByUserId(userId);
-        return userGroups.stream().map(Subscription::getGroup).collect(Collectors.toList());
+        return subscriptionRepository.findSubscriptionsByUserId(userId).stream()
+                .map(Subscription::getGroup)
+                .map(groupUtils::convertGroupToGroupDto)
+                .collect(Collectors.toList());
     }
 
     public Subscription createSubscription(SubscriptionId subscriptionId) {

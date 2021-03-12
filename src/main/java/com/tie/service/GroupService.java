@@ -1,5 +1,6 @@
 package com.tie.service;
 
+import com.tie.Utils.GroupUtils;
 import com.tie.model.dao.Group;
 import com.tie.model.dao.GroupField;
 import com.tie.model.dao.GroupFieldId;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,6 +24,7 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final GroupFieldRepository groupFieldRepository;
+    private final GroupUtils groupUtils;
 
     public GroupDto createGroup(GroupDto groupDto) {
         groupDto.setId(UUID.randomUUID().toString());
@@ -44,12 +45,8 @@ public class GroupService {
     }
 
     public List<GroupDto> getGroups() {
-        return groupRepository.findAll().stream().map(this::convertGroupToGroupDto).collect(Collectors.toList());
-    }
-
-    private GroupDto convertGroupToGroupDto(Group group) {
-        Map<Integer, String> fields = groupFieldRepository.findAllByGroupId(group.getId()).stream().collect(Collectors.toMap(groupField -> groupField.getGroupFieldId().getFieldId(), groupField -> groupField.getGroupFieldId().getFieldName()));
-        return new GroupDto(group.getId(), group.getName(), group.getDescription(), group.getNumberOfMembers(), group.getAvatarUrl(), fields);
+        return groupRepository.findAll().stream().map(groupUtils::convertGroupToGroupDto
+        ).collect(Collectors.toList());
     }
 
     Group verifyGroupExists(String groupId) {
