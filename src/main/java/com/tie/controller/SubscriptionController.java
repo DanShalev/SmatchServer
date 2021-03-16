@@ -20,23 +20,23 @@ public class SubscriptionController {
 
 
     @GetMapping("/group/{groupId}")
-    public List<User> getGroupSubscribers(@PathVariable String groupId) {
-        return subscriptionService.getGroupSubscribers(groupId);
+    public List<User> getGroupProfiles(@PathVariable String groupId) {
+        return subscriptionService.getGroupProfiles(groupId);
     }
 
     @GetMapping("/user/{userId}")
-    public List<GroupDto> getUserSubscriptions(@PathVariable String userId) {
-        return subscriptionService.getUserSubscriptions(userId);
+    public List<GroupDto> getGroups(@PathVariable String userId) {
+        return subscriptionService.getGroups(userId);
     }
 
 
     @PostMapping("/add/{groupId}/{userId}")
-    public Subscription createSubscription(@PathVariable String groupId, @PathVariable String userId) {
-        return subscriptionService.createSubscription(new SubscriptionId(groupId, userId));
+    public Subscription addUserToGroup(@PathVariable String groupId, @PathVariable String userId) {
+        return subscriptionService.addUserToGroup(new SubscriptionId(groupId, userId));
     }
 
     @DeleteMapping("/delete/{groupId}/{userId}")
-    public void deleteSubscription(@PathVariable String groupId, @PathVariable String userId) {
+    public void deleteUserFromGroup(@PathVariable String groupId, @PathVariable String userId) {
         subscriptionService.deleteSubscription(new SubscriptionId(groupId, userId));
     }
 

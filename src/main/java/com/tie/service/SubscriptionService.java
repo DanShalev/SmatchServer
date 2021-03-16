@@ -32,13 +32,13 @@ public class SubscriptionService {
         subscriptionRepository.delete(subscription);
     }
 
-    public List<User> getGroupSubscribers(String groupId) {
+    public List<User> getGroupProfiles(String groupId) {
         groupService.verifyGroupExists(groupId);
         List<Subscription> groupSubscriptions = subscriptionRepository.findSubscriptionsByGroupId(groupId);
         return groupSubscriptions.stream().map(Subscription::getUser).collect(Collectors.toList());
     }
 
-    public List<GroupDto> getUserSubscriptions(String userId) {
+    public List<GroupDto> getGroups(String userId) {
         userService.verifyUserExists(userId);
         return subscriptionRepository.findSubscriptionsByUserId(userId).stream()
                 .map(Subscription::getGroup)
@@ -46,7 +46,7 @@ public class SubscriptionService {
                 .collect(Collectors.toList());
     }
 
-    public Subscription createSubscription(SubscriptionId subscriptionId) {
+    public Subscription addUserToGroup(SubscriptionId subscriptionId) {
         User user = userService.verifyUserExists(subscriptionId.getUserId());
         Group group = groupService.verifyGroupExists(subscriptionId.getGroupId());
         verifySubscriptionDoesntExist(subscriptionId);

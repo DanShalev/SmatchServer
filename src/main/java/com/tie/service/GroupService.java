@@ -44,7 +44,7 @@ public class GroupService {
         return group;
     }
 
-    public List<GroupDto> getGroups() {
+    public List<GroupDto> getAllGroups() {
         return groupRepository.findAll().stream().map(groupUtils::convertGroupToGroupDto
         ).collect(Collectors.toList());
     }

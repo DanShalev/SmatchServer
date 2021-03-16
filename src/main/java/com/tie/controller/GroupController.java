@@ -20,8 +20,8 @@ public class GroupController {
     private final GroupService groupService;
 
     @GetMapping("/get")
-    public List<GroupDto> getGroups() {
-        return groupService.getGroups();
+    public List<GroupDto> getAllGroups() {
+        return groupService.getAllGroups();
     }
 
     @PostMapping("/create")
