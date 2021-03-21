@@ -80,5 +80,26 @@ public class MatchService {
         }
     }
 
+    public Boolean didLikeOrDislikeOtherUser(String groupId, String userId, String otherUserId) {
+        if (userId == null || otherUserId == null || userId.equals(otherUserId)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Bad user id: userId: %s, otherUserId: %s.",
+                    userId, otherUserId));
+        }
 
+        Optional<Match> matchOptional;
+        if (userId.compareTo(otherUserId) < 0) {
+            matchOptional = matchRepository.findByMatchId(new MatchId(groupId, userId, otherUserId));
+            if (matchOptional.isPresent()) {
+                Match match = matchOptional.get();
+                return match.getFirstUserLike() != null;
+            }
+        } else {
+            matchOptional = matchRepository.findByMatchId(new MatchId(groupId, otherUserId, userId));
+            if (matchOptional.isPresent()) {
+                Match match = matchOptional.get();
+                return match.getSecondUserLike() != null;
+            }
+        }
+        return false;
+    }
 }

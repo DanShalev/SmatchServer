@@ -2,7 +2,6 @@ package com.tie.controller;
 
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
-import com.tie.model.dao.User;
 import com.tie.model.dto.GroupDto;
 import com.tie.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +16,6 @@ import java.util.List;
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
-
-
-    @GetMapping("/group/{groupId}")
-    public List<User> getGroupProfiles(@PathVariable String groupId) {
-        return subscriptionService.getGroupProfiles(groupId);
-    }
 
     @GetMapping("/user/{userId}")
     public List<GroupDto> getGroups(@PathVariable String userId) {
