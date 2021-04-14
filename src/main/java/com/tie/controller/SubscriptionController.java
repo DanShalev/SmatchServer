@@ -2,7 +2,7 @@ package com.tie.controller;
 
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
-import com.tie.model.dto.GroupDto;
+import com.tie.model.dto.GroupDTO;
 import com.tie.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @GetMapping("/user/{userId}")
-    public List<GroupDto> getGroups(@PathVariable String userId) {
+    public List<GroupDTO> getGroups(@PathVariable String userId) {
         return subscriptionService.getGroups(userId);
     }
 

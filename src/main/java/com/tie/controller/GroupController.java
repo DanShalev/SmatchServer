@@ -1,7 +1,7 @@
 package com.tie.controller;
 
 import com.tie.model.dao.User;
-import com.tie.model.dto.GroupDto;
+import com.tie.model.dto.GroupDTO;
 import com.tie.service.GroupService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +16,17 @@ public class GroupController {
     private final GroupService groupService;
 
     @GetMapping("/get")
-    public List<GroupDto> getAllGroups() {
+    public List<GroupDTO> getAllGroups() {
         return groupService.getAllGroups();
     }
 
     @PostMapping("/create")
-    public GroupDto createGroup(@RequestBody GroupDto group) {
+    public GroupDTO createGroup(@RequestBody GroupDTO group) {
         return groupService.createGroup(group);
     }
 
     @PutMapping("/edit")
-    public GroupDto editGroup(@RequestBody GroupDto group) {
+    public GroupDTO editGroup(@RequestBody GroupDTO group) {
         return groupService.editGroup(group);
     }
 

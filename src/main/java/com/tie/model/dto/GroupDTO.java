@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Data
 @AllArgsConstructor
-public class GroupDto {
+public class GroupDTO {
 
     private String id;
     private String name;
