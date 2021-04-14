@@ -1,13 +1,11 @@
 package com.tie.service;
 
 import com.tie.Utils.GroupUtils;
-import com.tie.model.dao.Match;
 import com.tie.model.dao.Group;
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;
 import com.tie.model.dao.User;
-import com.tie.model.dto.GroupDto;
-import com.tie.repository.MatchRepository;
+import com.tie.model.dto.GroupDTO;
 import com.tie.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +31,7 @@ public class SubscriptionService {
         subscriptionRepository.delete(subscription);
     }
 
-    public List<GroupDto> getGroups(String userId) {
+    public List<GroupDTO> getGroups(String userId) {
         userService.verifyUserExists(userId);
         return subscriptionRepository.findSubscriptionsByUserId(userId).stream()
                 .map(Subscription::getGroup)

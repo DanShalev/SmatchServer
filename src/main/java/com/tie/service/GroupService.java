@@ -2,7 +2,7 @@ package com.tie.service;
 
 import com.tie.Utils.GroupUtils;
 import com.tie.model.dao.*;
-import com.tie.model.dto.GroupDto;
+import com.tie.model.dto.GroupDTO;
 import com.tie.repository.GroupFieldRepository;
 import com.tie.repository.GroupRepository;
 import com.tie.repository.MatchRepository;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +29,7 @@ public class GroupService {
     private final MatchService matchService;
     private final GroupUtils groupUtils;
 
-    public GroupDto createGroup(GroupDto groupDto) {
+    public GroupDTO createGroup(GroupDTO groupDto) {
         groupDto.setId(UUID.randomUUID().toString());
         groupRepository.save(new Group(groupDto));
         groupDto.getFields().forEach((fieldId, fieldName) -> createField(groupDto.getId(), fieldId, fieldName));
@@ -42,13 +41,13 @@ public class GroupService {
         groupFieldRepository.save(new GroupField(new GroupFieldId(groupId, fieldId, fieldName), group));
     }
 
-    public GroupDto editGroup(GroupDto group) {
+    public GroupDTO editGroup(GroupDTO group) {
         verifyGroupExists(group.getId());
         groupRepository.save(new Group(group));
         return group;
     }
 
-    public List<GroupDto> getAllGroups() {
+    public List<GroupDTO> getAllGroups() {
         return groupRepository.findAll().stream().map(groupUtils::convertGroupToGroupDto
         ).collect(Collectors.toList());
     }

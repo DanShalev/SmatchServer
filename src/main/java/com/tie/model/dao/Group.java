@@ -1,7 +1,7 @@
 package com.tie.model.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tie.model.dto.GroupDto;
+import com.tie.model.dto.GroupDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "groups_table")
 public class Group {
 
-    public Group(GroupDto groupDto) {
+    public Group(GroupDTO groupDto) {
         this.id = groupDto.getId();
         this.name = groupDto.getName();
         this.description = groupDto.getDescription();
