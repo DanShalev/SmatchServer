@@ -97,3 +97,13 @@ VALUES ('1', 1, 'area'),
        ('3', 2, 'budget'),
        ('4', 1, 'area'),
        ('4', 2, 'budget');
+
+INSERT INTO `matches_table` (`first_user_id`, `group_id`, `second_user_id`, `first_user_like`, `second_user_like`)
+VALUES ('1', '1', '2', null, true),
+       ('1', '1', '3', true, null),
+       ('1', '1', '4', true, null),
+       ('1', '2', '2', true, null),
+       ('1', '2', '3', true, null),
+       ('1', '2', '4', true, null),
+       ('1', '2', '6', true, null),
+       ('1', '2', '7', true, null);
