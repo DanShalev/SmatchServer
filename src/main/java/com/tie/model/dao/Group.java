@@ -19,7 +19,7 @@ public class Group {
         this.id = groupDto.getId();
         this.name = groupDto.getName();
         this.description = groupDto.getDescription();
-        this.avatarUrl = groupDto.getAvatarUrl();
+        this.avatar = groupDto.getAvatar();
         this.numberOfMembers = groupDto.getNumberOfMembers();
     }
 
@@ -36,8 +36,10 @@ public class Group {
     @Column(name = "number_of_members")
     private String numberOfMembers;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "avatar_url")
-    private String avatarUrl;
+    private String avatar;
 
     @JsonIgnore
     @ToString.Exclude

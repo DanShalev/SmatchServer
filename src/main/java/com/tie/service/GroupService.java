@@ -7,6 +7,7 @@ import com.tie.repository.GroupFieldRepository;
 import com.tie.repository.GroupRepository;
 import com.tie.repository.MatchRepository;
 import com.tie.repository.SubscriptionRepository;
+import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class GroupService {
 
         return subscriptionRepository.findSubscriptionsByGroupId(groupId)
                 .stream()
-                .map(Subscription::getUser)
+                .map(Subscription::getUser).peek(this::setUserImages)
                 .filter(user -> !user.getId().equals(userId))
                 .filter(otherUser -> !matchService.didLikeOrDislikeOtherUser(groupId, userId, otherUser.getId()))
                 .collect(Collectors.toList());
@@ -81,5 +82,21 @@ public class GroupService {
         String firstUser = match.getMatchId().getFirstUserId();
         String secondUser = match.getMatchId().getSecondUserId();
         return firstUser.equals(userId) ? secondUser : firstUser;
+    }
+
+    private void setUserImages(User user) {
+        if (user.getImage1() != null) {
+            user.setImage1(decode(user.getImage1()));
+        }
+        if (user.getImage2() != null) {
+            user.setImage2(decode(user.getImage2()));
+        }
+        if (user.getImage3() != null) {
+            user.setImage3(decode(user.getImage3()));
+        }
+    }
+
+    private static byte[] decode(byte[] image) {
+        return Base64.getDecoder().decode(image);
     }
 }
