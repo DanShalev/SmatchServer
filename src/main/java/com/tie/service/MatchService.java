@@ -1,8 +1,10 @@
 package com.tie.service;
 
+import com.tie.Utils.Constants;
 import com.tie.model.dao.Match;
 import com.tie.model.dao.MatchId;
 import com.tie.repository.MatchRepository;
+import io.github.jav.exposerversdk.PushClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class MatchService {
 
     private final MatchRepository matchRepository;
+    private final UserService userService;
 
-    public boolean insertLike(String groupId, String likeUserId, String otherUserId) {
-        if (likeUserId == null || otherUserId == null || likeUserId.equals(otherUserId)){
+    public boolean insertLike(String groupId, String likeUserId, String otherUserId) throws PushClientException, InterruptedException {
+        boolean isMatch = false;
+        if (likeUserId == null || otherUserId == null || likeUserId.equals(otherUserId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Bad user id: likedUserId: %s, otherUserId: %s.",
                     likeUserId, otherUserId));
         }
@@ -30,11 +34,10 @@ public class MatchService {
                 Match match = matchOptional.get();
                 match.setFirstUserLike(true);
                 matchRepository.save(match);
-                return match.getSecondUserLike() != null && match.getSecondUserLike();
+                isMatch = match.getSecondUserLike() != null && match.getSecondUserLike();
             } else {
                 Match match = new Match(new MatchId(groupId, likeUserId, otherUserId), true, null);
                 matchRepository.save(match);
-                return false;
             }
         } else {
             matchOptional = matchRepository.findByMatchId(new MatchId(groupId, otherUserId, likeUserId));
@@ -42,13 +45,15 @@ public class MatchService {
                 Match match = matchOptional.get();
                 match.setSecondUserLike(true);
                 matchRepository.save(match);
-                return match.getFirstUserLike() != null && match.getFirstUserLike();
+                isMatch = match.getFirstUserLike() != null && match.getFirstUserLike();
             } else {
                 Match match = new Match(new MatchId(groupId, otherUserId, likeUserId), null, true);
                 matchRepository.save(match);
-                return false;
             }
         }
+        if (isMatch)
+            NotificationService.push(userService.getUserToken(otherUserId), Constants.SMATCH_TITLE, "");
+        return isMatch;
     }
 
     public void insertDislike(String groupId, String dislikeUserId, String otherUserId) {

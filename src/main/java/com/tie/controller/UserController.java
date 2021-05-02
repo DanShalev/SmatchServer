@@ -2,13 +2,11 @@ package com.tie.controller;
 
 import com.tie.model.dao.User;
 import com.tie.service.UserService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.json.JSONException;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -22,9 +20,13 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @PostMapping("/registerUserForPushNotifications/{userId}")
+    public User registerUserForPushNotifications(@PathVariable String userId, @RequestBody String token) throws JSONException {
+        return userService.registerForPushNotifications(userId, token);
+    }
+
     @PostMapping("/add")
     public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
-
 }
