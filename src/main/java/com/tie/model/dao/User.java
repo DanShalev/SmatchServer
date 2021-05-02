@@ -32,6 +32,9 @@ public class User {
     @Column(name = "age")
     private int age;
 
+    @Column(name = "push_notification_token")
+    private String pushNotificationToken;
+
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "image1")
