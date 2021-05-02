@@ -2,8 +2,10 @@ package com.tie.controller;
 
 import com.tie.model.dao.User;
 import com.tie.model.dto.GroupDTO;
+import com.tie.model.dto.UserFieldDTO;
 import com.tie.service.GroupService;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,5 +40,10 @@ public class GroupController {
     @GetMapping("/matches/{groupId}/{userId}")
     public List<String> getGroupMatches(@PathVariable String groupId, @PathVariable String userId) {
         return groupService.getGroupMatches(groupId, userId);
+    }
+
+    @GetMapping("/fields/{groupId}/{userId}")
+    List<UserFieldDTO> getUserGroupFields(@PathVariable String groupId, @PathVariable String userId) {
+        return groupService.getUserGroupFields(groupId, userId);
     }
 }
