@@ -1,14 +1,15 @@
 package com.tie.model.dao;
 
 import com.tie.model.dto.ChatDTO;
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Date;
 
 @Entity
 @Table(name = "chats")
@@ -21,7 +22,6 @@ public class Chat {
         this.chatId = new ChatId(chatDTO.getGroupId(), chatDTO.getSenderId(), chatDTO.getReceiverId());
         this.time = new Date().getTime();
         this.message = chatDTO.getMessage();
-        this.isReceived = false;
     }
 
     @EmbeddedId
@@ -29,9 +29,6 @@ public class Chat {
 
     @Column(name = "time")
     private Long time;
-
-    @Column(name = "received")
-    private Boolean isReceived;
 
     @Column(name = "message", nullable = false)
     private String message;

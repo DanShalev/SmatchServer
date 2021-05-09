@@ -2,6 +2,7 @@ package com.tie.controller;
 
 import com.tie.model.dto.ChatDTO;
 import com.tie.service.ChatService;
+import io.github.jav.exposerversdk.PushClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/send")
-    public void sendMessage(@RequestBody ChatDTO chatDTO) {
+    public void sendMessage(@RequestBody ChatDTO chatDTO) throws PushClientException, InterruptedException {
         chatService.sendMessage(chatDTO);
     }
 
