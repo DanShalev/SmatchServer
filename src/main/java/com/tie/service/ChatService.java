@@ -11,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,7 +25,7 @@ public class ChatService {
 
     public void sendMessage(ChatDTO chatDTO) throws PushClientException, InterruptedException {
         if (chatDTO.getSenderId().equals(chatDTO.getReceiverId()) || chatDTO.getMessage() == null
-                || chatDTO.getMessage().isBlank() || chatDTO.getGroupId() == null || chatDTO.getGroupId()
+                    || chatDTO.getMessage().isBlank() || chatDTO.getGroupId() == null || chatDTO.getGroupId()
                 .isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Bad request - groupId: %s, senderId: %s, receiverId: %s, message: %s",
@@ -38,5 +42,20 @@ public class ChatService {
 
         NotificationService.push(token, title, message);
         chatRepository.save(chat);
+    }
+
+    public List<Chat> getMessages(String groupId, String userId) {
+        if (userId == null || groupId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Bad request - groupId: %s, userId: %s", groupId, userId));
+        }
+
+        List<User> senders = userService.getUsers();
+
+        return senders.stream()
+                .map(sender -> chatRepository.findAllChatsByGroupAndUserId(groupId, userId, sender.getId()))
+                .filter(senderChats -> !senderChats.isEmpty())
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 }
