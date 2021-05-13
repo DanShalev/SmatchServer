@@ -38,7 +38,7 @@ public class Group {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "avatar_url")
+    @Column(name = "avatar")
     private String avatar;
 
     @JsonIgnore

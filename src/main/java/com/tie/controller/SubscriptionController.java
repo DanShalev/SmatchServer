@@ -25,12 +25,12 @@ public class SubscriptionController {
 
     @PostMapping("/add/{groupId}/{userId}")
     public Subscription addUserToGroup(@PathVariable String groupId, @PathVariable String userId) {
-        return subscriptionService.addUserToGroup(new SubscriptionId(groupId, userId));
+        return subscriptionService.addUserToGroup(groupId, userId);
     }
 
     @DeleteMapping("/delete/{groupId}/{userId}")
     public void deleteUserFromGroup(@PathVariable String groupId, @PathVariable String userId) {
-        subscriptionService.deleteSubscription(new SubscriptionId(groupId, userId));
+        subscriptionService.deleteSubscription(groupId, userId);
     }
 
 }
