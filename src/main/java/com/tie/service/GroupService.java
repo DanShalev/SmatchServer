@@ -29,9 +29,15 @@ public class GroupService {
     private final MatchService matchService;
     private final GroupUtils groupUtils;
 
-    public GroupDTO createGroup(GroupDTO groupDto) {
+    public GroupDTO createGroup(GroupDTO groupDto, String auth) {
         groupDto.setId(UUID.randomUUID().toString());
-        groupRepository.save(new Group(groupDto));
+        Group group = new Group(groupDto);
+        User user = userRepository.findUserById(auth).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        String.format("User %s doesn't exist.", auth)));
+        SubscriptionId id = new SubscriptionId(groupDto.getId(), auth);
+        groupRepository.save(group);
+        subscriptionRepository.save(new Subscription(id, group, user));
         groupDto.getFields().forEach((fieldId, fieldName) -> createField(groupDto.getId(), fieldId, fieldName));
         return groupDto;
     }

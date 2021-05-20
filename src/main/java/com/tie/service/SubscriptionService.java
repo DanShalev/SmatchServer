@@ -26,7 +26,8 @@ public class SubscriptionService {
     private final SubscriptionRepository subscriptionRepository;
     private final GroupUtils groupUtils;
 
-    public void deleteSubscription(SubscriptionId subscriptionId) {
+    public void deleteSubscription(String groupId,String userId) {
+        SubscriptionId subscriptionId = new SubscriptionId(groupId, userId);
         Subscription subscription = verifySubscriptionExists(subscriptionId);
         subscriptionRepository.delete(subscription);
     }
@@ -39,9 +40,10 @@ public class SubscriptionService {
                 .collect(Collectors.toList());
     }
 
-    public Subscription addUserToGroup(SubscriptionId subscriptionId) {
-        User user = userService.verifyUserExists(subscriptionId.getUserId());
-        Group group = groupService.verifyGroupExists(subscriptionId.getGroupId());
+    public Subscription addUserToGroup(String groupId, String userId) {
+        SubscriptionId subscriptionId = new SubscriptionId(groupId, userId);
+        User user = userService.verifyUserExists(userId);
+        Group group = groupService.verifyGroupExists(groupId);
         verifySubscriptionDoesntExist(subscriptionId);
         Subscription subscription = new Subscription(subscriptionId, group, user);
         subscriptionRepository.save(subscription);

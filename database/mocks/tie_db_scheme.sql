@@ -1,4 +1,4 @@
-INSERT INTO groups_table (id, name, description, number_of_members, avatar_url)
+INSERT INTO groups_table (id, name, description, number_of_members, avatar)
 VALUES (
         '1',
         'CS Study Buddies',
