@@ -3,16 +3,25 @@ package com.tie.service;
 import com.tie.Utils.GroupUtils;
 import com.tie.model.dao.*;
 import com.tie.model.dto.GroupDTO;
+import com.tie.repository.GroupFieldRepository;
+import com.tie.repository.GroupRepository;
+import com.tie.repository.MatchRepository;
+import com.tie.repository.SubscriptionRepository;
+import com.tie.repository.UserRepository;
 import com.tie.model.dto.UserFieldDTO;
 import com.tie.repository.*;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,31 +78,51 @@ public class GroupService {
 
         return subscriptionRepository.findSubscriptionsByGroupId(groupId)
                 .stream()
-                .map(Subscription::getUser).peek(this::setUserImages)
+                .map(Subscription::getUser)
+                .map(this::setUserImages)
                 .filter(user -> !user.getId().equals(userId))
                 .filter(otherUser -> !matchService.didLikeOrDislikeOtherUser(groupId, userId, otherUser.getId()))
                 .collect(Collectors.toList());
     }
 
-    public List<String> getGroupMatches(String groupId, String userId) {
+    public List<User> getGroupMatches(String groupId, String userId) {
         verifyGroupExists(groupId);
         return matchRepository.findAllMatchesByGroupAndUserId(groupId, userId)
                 .stream()
                 .map(match -> getOtherUserId(match, userId))
+                .map(this::setUserImages)
                 .collect(Collectors.toList());
     }
 
-    private String getOtherUserId(Match match, String userId) {
-        String firstUser = match.getMatchId().getFirstUserId();
-        String secondUser = match.getMatchId().getSecondUserId();
-        return firstUser.equals(userId) ? secondUser : firstUser;
+    private User getOtherUserId(Match match, String userId) {
+        String firstUserId = match.getMatchId().getFirstUserId();
+        String secondUserId = match.getMatchId().getSecondUserId();
+        User secondUser = userRepository.findUserById(secondUserId).orElseThrow();
+        User firstUser = userRepository.findUserById(firstUserId).orElseThrow();
+        return firstUserId.equals(userId) ? secondUser : firstUser;
+    }
+
+
+    public Map<String, List<User>> getAllSubscribedGroupsProfiles(String userId) {
+        return subscriptionRepository.findSubscriptionsByUserId(userId).stream()
+                .map(subscription -> subscription.getId().getGroupId())
+                .map(groupId -> Pair.of(groupId, getGroupProfiles(groupId, userId)))
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+    }
+
+    public Map<String, List<User>> getAllSubscribedGroupsMatches(String userId) {
+        return subscriptionRepository.findSubscriptionsByUserId(userId)
+                .stream()
+                .map(subscription -> subscription.getId().getGroupId())
+                .map(groupId -> Pair.of(groupId, getGroupMatches(groupId, userId)))
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
     }
 
     public List<UserFieldDTO> getUserGroupFields(String groupId, String userId) {
         verifyGroupExists(groupId);
 
         User user = userRepository.findUserById(userId).orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         String.format("User %s doesn't exist.", userId)));
 
         UserFieldDTO ageField = new UserFieldDTO("Sex", user.getSex());
@@ -104,15 +133,15 @@ public class GroupService {
 
         for (UserField field : fields) {
             Optional<GroupField> groupFieldOptional = groupFieldRepository.findByGroupIdAndFieldId(
-                                                        groupId, field.getUserFieldId().getGroupFieldId());
+                    groupId, field.getUserFieldId().getGroupFieldId());
             groupFieldOptional.ifPresent(groupField -> result.add(
-                                new UserFieldDTO(groupField.getGroupFieldId().getFieldName(), field.getFieldValue()))
+                    new UserFieldDTO(groupField.getGroupFieldId().getFieldName(), field.getFieldValue()))
             );
         }
         return result;
     }
 
-    private void setUserImages(User user) {
+    private User setUserImages(User user) {
         if (user.getImage1() != null) {
             user.setImage1(decode(user.getImage1()));
         }
@@ -122,6 +151,7 @@ public class GroupService {
         if (user.getImage3() != null) {
             user.setImage3(decode(user.getImage3()));
         }
+        return user;
     }
 
     private static byte[] decode(byte[] image) {
