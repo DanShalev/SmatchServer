@@ -5,6 +5,7 @@ import com.tie.model.dto.GroupDTO;
 import com.tie.model.dto.UserFieldDTO;
 import com.tie.service.GroupService;
 import java.util.List;
+import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,18 +33,30 @@ public class GroupController {
         return groupService.editGroup(group);
     }
 
-    @GetMapping("/{groupId}/{userId}")
+    @GetMapping("/profiles/{groupId}/{userId}")
     public List<User> getGroupProfiles(@PathVariable String groupId, @PathVariable String userId) {
         return groupService.getGroupProfiles(groupId, userId);
     }
 
+    @GetMapping("/profiles/{userId}")
+    public Map<String, List<User>> getAllSubscribedGroupsProfiles(@PathVariable String userId) {
+        return groupService.getAllSubscribedGroupsProfiles(userId);
+    }
+
     @GetMapping("/matches/{groupId}/{userId}")
-    public List<String> getGroupMatches(@PathVariable String groupId, @PathVariable String userId) {
+    public List<User> getGroupMatches(@PathVariable String groupId, @PathVariable String userId) {
         return groupService.getGroupMatches(groupId, userId);
     }
 
+    @GetMapping("/matches/{userId}")
+    public Map<String, List<User>> getAllSubscribedGroupsMatches(@PathVariable String userId) {
+        return groupService.getAllSubscribedGroupsMatches(userId);
+    }
+
     @GetMapping("/fields/{groupId}/{userId}")
-    List<UserFieldDTO> getUserGroupFields(@PathVariable String groupId, @PathVariable String userId) {
+    public List<UserFieldDTO> getUserGroupFields(@PathVariable String groupId, @PathVariable String userId) {
         return groupService.getUserGroupFields(groupId, userId);
     }
+
+
 }
