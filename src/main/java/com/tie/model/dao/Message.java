@@ -1,6 +1,6 @@
 package com.tie.model.dao;
 
-import com.tie.model.dto.ChatDTO;
+import com.tie.model.dto.MessageDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,16 +16,16 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Chat {
-
-    public Chat(ChatDTO chatDTO) {
-        this.chatId = new ChatId(chatDTO.getGroupId(), chatDTO.getSenderId(), chatDTO.getReceiverId());
-        this.time = new Date().getTime();
-        this.message = chatDTO.getMessage();
-    }
+public class Message {
 
     @EmbeddedId
-    private ChatId chatId;
+    private MessageId messageId;
+
+    public Message(MessageDTO messageDTO) {
+        this.messageId = new MessageId(messageDTO.getGroupId(), messageDTO.getSenderId(), messageDTO.getReceiverId());
+        this.time = new Date().getTime();
+        this.message = messageDTO.getContent();
+    }
 
     @Column(name = "time")
     private Long time;

@@ -40,6 +40,12 @@ public class SubscriptionService {
                 .collect(Collectors.toList());
     }
 
+    public List<User> geUsers(String groupId) {
+        groupService.verifyGroupExists(groupId);
+        return subscriptionRepository.findSubscriptionsByGroupId(groupId).stream()
+                .map(Subscription::getUser)
+                .collect(Collectors.toList());
+    }
     public Subscription addUserToGroup(String groupId, String userId) {
         SubscriptionId subscriptionId = new SubscriptionId(groupId, userId);
         User user = userService.verifyUserExists(userId);
