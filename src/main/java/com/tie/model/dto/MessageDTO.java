@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ChatDTO {
+public class MessageDTO {
 
     private String groupId;
     private String senderId;
     private String receiverId;
-    private String message;
+    private String content;
 
 }

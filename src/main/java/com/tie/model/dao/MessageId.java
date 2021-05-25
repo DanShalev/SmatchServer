@@ -1,18 +1,19 @@
 package com.tie.model.dao;
 
-import java.io.Serializable;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+import java.util.UUID;
 
 @Embeddable
 @NoArgsConstructor
 @Data
-public class ChatId implements Serializable {
+public class MessageId implements Serializable {
 
-    public ChatId(String groupId, String senderId, String receiverId) {
+    public MessageId(String groupId, String senderId, String receiverId) {
         this.groupId = groupId;
         this.senderId = senderId;
         this.receiverId = receiverId;
