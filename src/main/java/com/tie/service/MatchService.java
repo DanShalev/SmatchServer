@@ -23,10 +23,7 @@ public class MatchService {
 
     public boolean insertLike(String groupId, String likeUserId, String otherUserId) throws PushClientException, InterruptedException {
         boolean isMatch = false;
-        if (likeUserId == null || otherUserId == null || likeUserId.equals(otherUserId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Bad user id: likedUserId: %s, otherUserId: %s.",
-                    likeUserId, otherUserId));
-        }
+        validateIds(likeUserId,otherUserId);
         Optional<Match> matchOptional;
         if (likeUserId.compareTo(otherUserId) < 0) {
             matchOptional = matchRepository.findByMatchId(new MatchId(groupId, likeUserId, otherUserId));
@@ -57,21 +54,18 @@ public class MatchService {
     }
 
     public void insertDislike(String groupId, String dislikeUserId, String otherUserId) {
-        if (dislikeUserId == null || otherUserId == null || dislikeUserId.equals(otherUserId)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Bad user id: likedUserId: %s, otherUserId: %s.",
-                    dislikeUserId, otherUserId));
-        }
+        validateIds(dislikeUserId,otherUserId);
         Optional<Match> matchOptional;
         if (dislikeUserId.compareTo(otherUserId) < 0) {
             matchOptional = matchRepository.findByMatchId(new MatchId(groupId, dislikeUserId, otherUserId));
+            Match match;
             if (matchOptional.isPresent()) {
-                Match match = matchOptional.get();
+                match = matchOptional.get();
                 match.setFirstUserLike(false);
-                matchRepository.save(match);
             } else {
-                Match match = new Match(new MatchId(groupId, dislikeUserId, otherUserId), false, null);
-                matchRepository.save(match);
+                match = new Match(new MatchId(groupId, dislikeUserId, otherUserId), false, null);
             }
+            matchRepository.save(match);
         } else {
             matchOptional = matchRepository.findByMatchId(new MatchId(groupId, otherUserId, dislikeUserId));
             if (matchOptional.isPresent()) {
@@ -86,11 +80,7 @@ public class MatchService {
     }
 
     public Boolean didLikeOrDislikeOtherUser(String groupId, String userId, String otherUserId) {
-        if (userId == null || otherUserId == null || userId.equals(otherUserId)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Bad user id: userId: %s, otherUserId: %s.",
-                    userId, otherUserId));
-        }
-
+        validateIds(userId,otherUserId);
         Optional<Match> matchOptional;
         if (userId.compareTo(otherUserId) < 0) {
             matchOptional = matchRepository.findByMatchId(new MatchId(groupId, userId, otherUserId));
@@ -106,5 +96,35 @@ public class MatchService {
             }
         }
         return false;
+    }
+
+    public void unmatch(String groupId, String userId, String otherUserId) {
+        validateIds(userId, otherUserId);
+
+        int numberOfUpdates;
+        if (userId.compareTo(otherUserId) < 0) {
+            numberOfUpdates = matchRepository.unmatchUsers(groupId, userId, otherUserId);
+        } else {
+            numberOfUpdates = matchRepository.unmatchUsers(groupId, otherUserId, userId);
+        }
+        if (numberOfUpdates == 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("No match between userId: %s and otherUserId: %s was found", userId, otherUserId));
+        }
+    }
+
+    public void unmatchGroup(String groupId, String userId) {
+        if (groupId == null || userId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("No such group groupId: %s or userId: %s", groupId, userId));
+        }
+        matchRepository.unmatchAllGroupUsers(groupId, userId);
+    }
+
+    private static void validateIds(String userId, String otherUserId) {
+        if (userId == null || otherUserId == null || userId.equals(otherUserId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Bad user id: userId: %s, otherUserId: %s.", userId, otherUserId));
+        }
     }
 }

@@ -24,8 +24,8 @@ public class GroupController {
     }
 
     @PostMapping("/create")
-    public GroupDTO createGroup(@RequestBody GroupDTO group, @RequestHeader String auth) {
-        return groupService.createGroup(group,auth);
+    public GroupDTO createGroup(@RequestBody GroupDTO group, @RequestHeader String userId) {
+        return groupService.createGroup(group,userId);
     }
 
     @PutMapping("/edit")

@@ -5,6 +5,8 @@ import io.github.jav.exposerversdk.PushClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +26,16 @@ public class MatchController {
     public void insertDislike(@PathVariable String groupId, @PathVariable String dislikeUserId, @PathVariable String otherUserId) {
         matchService.insertDislike(groupId, dislikeUserId, otherUserId);
     }
+
+    @PutMapping("/update/{groupId}/{otherUserId}")
+    public void unmatch(@PathVariable String groupId, @PathVariable String otherUserId, @RequestHeader String userId){
+        matchService.unmatch(groupId, userId, otherUserId);
+    }
+
+    @PutMapping("/update/{groupId}")
+    public void unmatchAllGroupUsers(@PathVariable String groupId, @RequestHeader String userId){
+        matchService.unmatchGroup(groupId, userId);
+    }
+
 
 }
