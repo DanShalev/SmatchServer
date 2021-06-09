@@ -5,6 +5,7 @@ import com.tie.model.dao.User;
 import com.tie.model.dto.GroupDTO;
 import com.tie.model.dto.MessageDTO;
 import com.tie.repository.ChatRepository;
+import io.github.jav.exposerversdk.ExpoPushMessage;
 import io.github.jav.exposerversdk.PushClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,11 +39,13 @@ public class ChatService {
         Message message = new Message(messageDTO);
 
         User receiver = userService.verifyUserExists(message.getMessageId().getReceiverId());
+
         String token = receiver.getPushNotificationToken();
         String title = "Smatch";
         String messageBody = receiver.getName() + " sent you a new message";
 
-        NotificationService.push(token, title, messageBody);
+        ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(token, title, messageBody, message.getMessageId());
+        NotificationService.push(expoPushMessage);
         chatRepository.save(message);
     }
 

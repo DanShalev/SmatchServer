@@ -4,6 +4,7 @@ import com.tie.Utils.Constants;
 import com.tie.model.dao.Match;
 import com.tie.model.dao.MatchId;
 import com.tie.repository.MatchRepository;
+import io.github.jav.exposerversdk.ExpoPushMessage;
 import io.github.jav.exposerversdk.PushClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +49,10 @@ public class MatchService {
                 matchRepository.save(match);
             }
         }
-        if (isMatch)
-            NotificationService.push(userService.getUserToken(otherUserId), Constants.SMATCH_TITLE, "");
+        if (isMatch) {
+            ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(userService.getUserToken(otherUserId), Constants.SMATCH_TITLE, "");
+            NotificationService.push(expoPushMessage);
+        }
         return isMatch;
     }
 
