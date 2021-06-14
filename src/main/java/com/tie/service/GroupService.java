@@ -143,18 +143,18 @@ public class GroupService {
 
     private User setUserImages(User user) {
         if (user.getImage1() != null) {
-            user.setImage1(decode(user.getImage1()));
+            user.setImage1(user.getImage1());
         }
         if (user.getImage2() != null) {
-            user.setImage2(decode(user.getImage2()));
+            user.setImage2(user.getImage2());
         }
         if (user.getImage3() != null) {
-            user.setImage3(decode(user.getImage3()));
+            user.setImage3(user.getImage3());
         }
         return user;
     }
 
-    private static byte[] decode(byte[] image) {
-        return Base64.getDecoder().decode(image);
-    }
+//    private static byte[] decode(byte[] image) {
+//        return Base64.getDecoder().decode(image);
+//    }
 }

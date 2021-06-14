@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public User addUser(@RequestBody User user) {
+    public Boolean addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 }

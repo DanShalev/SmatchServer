@@ -1,6 +1,7 @@
 package com.tie.service;
 
 import com.tie.model.dao.User;
+import com.tie.model.dto.UserFieldDTO;
 import com.tie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -21,10 +23,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User addUser(User user) {
-        user.setId(UUID.randomUUID().toString());
+    public Boolean addUser(User user) {
+        // If user exist, exit
+        Optional<User> userOptional = userRepository.findUserById(user.getId());
+        if (userOptional.isPresent()) {
+            return false;
+        }
+
+        // Register user
         userRepository.save(user);
-        return user;
+        return true;
     }
 
     public List<User> getUsers() {
