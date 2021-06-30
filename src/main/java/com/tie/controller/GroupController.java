@@ -33,28 +33,28 @@ public class GroupController {
         return groupService.editGroup(group);
     }
 
-    @GetMapping("/profiles/{groupId}/{userId}")
-    public List<User> getGroupProfiles(@PathVariable String groupId, @PathVariable String userId) {
+    @GetMapping("/profiles/{groupId}")
+    public List<User> getGroupProfiles(@PathVariable String groupId, @RequestHeader String userId) {
         return groupService.getGroupProfiles(groupId, userId);
     }
 
-    @GetMapping("/profiles/{userId}")
-    public Map<String, List<User>> getAllSubscribedGroupsProfiles(@PathVariable String userId) {
+    @GetMapping("/profiles")
+    public Map<String, List<User>> getAllSubscribedGroupsProfiles(@RequestHeader String userId) {
         return groupService.getAllSubscribedGroupsProfiles(userId);
     }
 
-    @GetMapping("/matches/{groupId}/{userId}")
-    public List<User> getGroupMatches(@PathVariable String groupId, @PathVariable String userId) {
+    @GetMapping("/matches/{groupId}")
+    public List<User> getGroupMatches(@PathVariable String groupId, @RequestHeader String userId) {
         return groupService.getGroupMatches(groupId, userId);
     }
 
-    @GetMapping("/matches/{userId}")
-    public Map<String, List<User>> getAllSubscribedGroupsMatches(@PathVariable String userId) {
+    @GetMapping("/matches")
+    public Map<String, List<User>> getAllSubscribedGroupsMatches(@RequestHeader String userId) {
         return groupService.getAllSubscribedGroupsMatches(userId);
     }
 
-    @GetMapping("/fields/{groupId}/{userId}")
-    public List<UserFieldDTO> getUserGroupFields(@PathVariable String groupId, @PathVariable String userId) {
+    @GetMapping("/fields/{groupId}")
+    public List<UserFieldDTO> getUserGroupFields(@PathVariable String groupId, @RequestHeader String userId) {
         return groupService.getUserGroupFields(groupId, userId);
     }
 

@@ -22,13 +22,13 @@ public class ChatController {
         chatService.sendMessage(messageDTO);
     }
 
-    @GetMapping("/get/{groupId}/{userId}/{otherUserId}")
-    public List<Message> getConversationMessages(@PathVariable String groupId, @PathVariable String userId, @PathVariable String otherUserId) {
+    @GetMapping("/get/{groupId}/{otherUserId}")
+    public List<Message> getConversationMessages(@PathVariable String groupId, @PathVariable String otherUserId, @RequestHeader String userId) {
         return chatService.getConversationMessages(groupId, userId, otherUserId);
     }
 
-    @GetMapping("/get/{userId}")
-    public Map<String, Map<String, List<Message>>> getAllSubscribedGroupsMessages(@PathVariable String userId) {
+    @GetMapping("/get")
+    public Map<String, Map<String, List<Message>>> getAllSubscribedGroupsMessages(@RequestHeader String userId) {
         return chatService.getAllSubscribedGroupsMessages(userId);
     }
 }

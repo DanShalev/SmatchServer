@@ -20,8 +20,8 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PostMapping("/registerUserForPushNotifications/{userId}")
-    public User registerUserForPushNotifications(@PathVariable String userId, @RequestBody String token) throws JSONException {
+    @PostMapping("/registerUserForPushNotifications")
+    public User registerUserForPushNotifications(@RequestBody String token, @RequestHeader String userId) throws JSONException {
         return userService.registerForPushNotifications(userId, token);
     }
 

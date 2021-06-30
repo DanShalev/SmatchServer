@@ -17,14 +17,14 @@ public class MatchController {
 
     private final MatchService matchService;
 
-    @PostMapping("/like/{groupId}/{likeUserId}/{otherUserId}")
-    public boolean insertLike(@PathVariable String groupId, @PathVariable String likeUserId, @PathVariable String otherUserId) throws PushClientException, InterruptedException {
-        return matchService.insertLike(groupId, likeUserId, otherUserId);
+    @PostMapping("/like/{groupId}/{otherUserId}")
+    public boolean insertLike(@PathVariable String groupId, @PathVariable String otherUserId, @RequestHeader String userId) throws PushClientException, InterruptedException {
+        return matchService.insertLike(groupId, userId, otherUserId);
     }
 
-    @PostMapping("/dislike/{groupId}/{dislikeUserId}/{otherUserId}")
-    public void insertDislike(@PathVariable String groupId, @PathVariable String dislikeUserId, @PathVariable String otherUserId) {
-        matchService.insertDislike(groupId, dislikeUserId, otherUserId);
+    @PostMapping("/dislike/{groupId}/{otherUserId}")
+    public void insertDislike(@PathVariable String groupId, @PathVariable String otherUserId, @RequestHeader String userId) {
+        matchService.insertDislike(groupId, userId, otherUserId);
     }
 
     @PutMapping("/update/{groupId}/{otherUserId}")
