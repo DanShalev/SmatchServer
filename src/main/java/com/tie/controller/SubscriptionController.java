@@ -17,19 +17,19 @@ public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
 
-    @GetMapping("/user/{userId}")
-    public List<GroupDTO> getGroups(@PathVariable String userId) {
+    @GetMapping("/user")
+    public List<GroupDTO> getGroups(@RequestHeader String userId) {
         return subscriptionService.getGroups(userId);
     }
 
 
-    @PostMapping("/add/{groupId}/{userId}")
-    public Subscription addUserToGroup(@PathVariable String groupId, @PathVariable String userId) {
+    @PostMapping("/add/{groupId}")
+    public Subscription addUserToGroup(@PathVariable String groupId, @RequestHeader String userId) {
         return subscriptionService.addUserToGroup(groupId, userId);
     }
 
-    @DeleteMapping("/delete/{groupId}/{userId}")
-    public void deleteUserFromGroup(@PathVariable String groupId, @PathVariable String userId) {
+    @DeleteMapping("/delete/{groupId}")
+    public void deleteUserFromGroup(@PathVariable String groupId, @RequestHeader String userId) {
         subscriptionService.deleteSubscription(groupId, userId);
     }
 
