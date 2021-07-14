@@ -23,9 +23,14 @@ public class GroupController {
         return groupService.getAllGroups();
     }
 
+    @GetMapping("/{groupId}")
+    public GroupDTO getGroupById(@PathVariable String groupId, @RequestHeader String userId) {
+        return groupService.getGroupById(groupId, userId);
+    }
+
     @PostMapping("/create")
     public GroupDTO createGroup(@RequestBody GroupDTO group, @RequestHeader String userId) {
-        return groupService.createGroup(group,userId);
+        return groupService.createGroup(group, userId);
     }
 
     @PutMapping("/edit")
