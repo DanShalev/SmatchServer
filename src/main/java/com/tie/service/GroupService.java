@@ -41,14 +41,18 @@ public class GroupService {
     public GroupDTO createGroup(GroupDTO groupDto, String userId) {
         groupDto.setId(UUID.randomUUID().toString());
         Group group = new Group(groupDto);
-        User user = userRepository.findUserById(userId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        String.format("User %s doesn't exist.", userId)));
+        User user = verifyUserExists(userId);
         SubscriptionId id = new SubscriptionId(groupDto.getId(), userId);
         groupRepository.save(group);
         subscriptionRepository.save(new Subscription(id, group, user));
         groupDto.getFields().forEach((fieldId, fieldName) -> createField(groupDto.getId(), fieldId, fieldName));
         return groupDto;
+    }
+
+    private User verifyUserExists(String userId) {
+        return userRepository.findUserById(userId).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            String.format("User %s doesn't exist.", userId)));
     }
 
     private void createField(String groupId, Integer fieldId, String fieldName) {
@@ -65,6 +69,12 @@ public class GroupService {
     public List<GroupDTO> getAllGroups() {
         return groupRepository.findAll().stream().map(groupUtils::convertGroupToGroupDto
         ).collect(Collectors.toList());
+    }
+
+    public GroupDTO getGroupById(String groupId, String userId) {
+        verifyUserExists(userId);
+        Group group = verifyGroupExists(groupId);
+        return groupUtils.convertGroupToGroupDto(group);
     }
 
     Group verifyGroupExists(String groupId) {
