@@ -39,10 +39,11 @@ public class ChatService {
         Message message = new Message(messageDTO);
 
         User receiver = userService.verifyUserExists(message.getMessageId().getReceiverId());
+        User sender = userService.verifyUserExists(message.getMessageId().getSenderId());
 
         String token = receiver.getPushNotificationToken();
         String title = "Smatch";
-        String messageBody = receiver.getName() + " sent you a new message";
+        String messageBody = sender.getName() + " sent you a new message";
 
         ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(token, title, messageBody, message.getMessageId());
         NotificationService.push(expoPushMessage);
