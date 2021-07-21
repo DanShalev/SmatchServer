@@ -1,7 +1,6 @@
 package com.tie.service;
 
 import com.tie.model.dao.User;
-import com.tie.model.dto.UserFieldDTO;
 import com.tie.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 
 @Service
@@ -57,5 +55,39 @@ public class UserService {
 
     public String getUserToken(String userId) {
         return verifyUserExists(userId).getPushNotificationToken();
+    }
+
+    public void setUserImage(String image, int imageNum, String userId) {
+        User user = verifyUserExists(userId);
+
+        switch (imageNum) {
+            case 1 -> user.setImage1(image);
+            case 2 -> user.setImage2(image);
+            case 3 -> user.setImage3(image);
+            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                                         String.format("Invalid Image Location (%s)", imageNum));
+        }
+        userRepository.save(user);
+    }
+
+    public void removeUserImage(int imageNum, String userId) {
+        User user = verifyUserExists(userId);
+
+        // Delete image and shift image location accordingly
+        switch (imageNum) {
+            case 1 -> {
+                user.setImage1(user.getImage2());
+                user.setImage2(user.getImage3());
+                user.setImage3(null);
+            }
+            case 2 -> {
+                user.setImage2(user.getImage3());
+                user.setImage3(null);
+            }
+            case 3 -> user.setImage3(null);
+            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Invalid Image Location (%s)", imageNum));
+        }
+        userRepository.save(user);
     }
 }
