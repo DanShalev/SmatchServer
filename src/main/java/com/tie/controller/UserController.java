@@ -15,9 +15,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/get")
+    @GetMapping("/getUsers")
     public List<User> getUsers() {
         return userService.getUsers();
+    }
+
+    @GetMapping("/getUser")
+    public User getUser(@RequestHeader String userId) {
+        return userService.verifyUserExists(userId);
     }
 
     @PostMapping("/registerUserForPushNotifications")
@@ -28,5 +33,15 @@ public class UserController {
     @PostMapping("/add")
     public Boolean addUser(@RequestBody User user) {
         return userService.addUser(user);
+    }
+
+    @PostMapping("/setUserImage/{imageNum}")
+    public void setUserImage(@RequestBody String image, @PathVariable int imageNum, @RequestHeader String userId) {
+        userService.setUserImage(image, imageNum, userId);
+    }
+
+    @GetMapping("/removeUserImage/{imageNum}")
+    public void removeUserImage(@PathVariable int imageNum, @RequestHeader String userId) {
+        userService.removeUserImage(imageNum, userId);
     }
 }
