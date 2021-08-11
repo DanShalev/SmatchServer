@@ -31,4 +31,16 @@ public class ChatController {
     public Map<String, Map<String, List<Message>>> getAllSubscribedGroupsMessages(@RequestHeader String userId) {
         return chatService.getAllSubscribedGroupsMessages(userId);
     }
+
+    @PostMapping("/setTypingStatus/{groupId}/{otherUserId}")
+    public void setTypingStatus(@PathVariable String groupId, @PathVariable String otherUserId,
+                                @RequestHeader String userId, @RequestBody Boolean typingStatus) {
+        chatService.setTypingStatus(groupId, userId, otherUserId, typingStatus);
+    }
+
+    @GetMapping("/getTypingStatus/{groupId}/{otherUserId}")
+    public Boolean setNotTyping(@PathVariable String groupId, @PathVariable String otherUserId,
+                                @RequestHeader String userId) {
+        return chatService.getTypingStatus(groupId, userId, otherUserId);
+    }
 }
