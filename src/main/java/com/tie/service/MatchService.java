@@ -34,7 +34,7 @@ public class MatchService {
                 matchRepository.save(match);
                 isMatch = match.getSecondUserLike() != null && match.getSecondUserLike();
             } else {
-                Match match = new Match(new MatchId(groupId, likeUserId, otherUserId), true, null);
+                Match match = new Match(new MatchId(groupId, likeUserId, otherUserId), true, null, false, false);
                 matchRepository.save(match);
             }
         } else {
@@ -45,7 +45,7 @@ public class MatchService {
                 matchRepository.save(match);
                 isMatch = match.getFirstUserLike() != null && match.getFirstUserLike();
             } else {
-                Match match = new Match(new MatchId(groupId, otherUserId, likeUserId), null, true);
+                Match match = new Match(new MatchId(groupId, otherUserId, likeUserId), null, true, false, false);
                 matchRepository.save(match);
             }
         }
@@ -66,7 +66,7 @@ public class MatchService {
                 match = matchOptional.get();
                 match.setFirstUserLike(false);
             } else {
-                match = new Match(new MatchId(groupId, dislikeUserId, otherUserId), false, null);
+                match = new Match(new MatchId(groupId, dislikeUserId, otherUserId), false, null, false, false);
             }
             matchRepository.save(match);
         } else {
@@ -76,7 +76,7 @@ public class MatchService {
                 match.setSecondUserLike(false);
                 matchRepository.save(match);
             } else {
-                Match match = new Match(new MatchId(groupId, otherUserId, dislikeUserId), null, false);
+                Match match = new Match(new MatchId(groupId, otherUserId, dislikeUserId), null, false, false, false);
                 matchRepository.save(match);
             }
         }
@@ -129,5 +129,21 @@ public class MatchService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Bad user id: userId: %s, otherUserId: %s.", userId, otherUserId));
         }
+    }
+
+    public Match getMatchFromIds(String groupId, String userId, String otherUserId) {
+        validateIds(userId,otherUserId);
+        Optional<Match> matchOptional;
+        if (userId.compareTo(otherUserId) < 0) {
+            matchOptional = matchRepository.findByMatchId(new MatchId(groupId, userId, otherUserId));
+        } else {
+            matchOptional = matchRepository.findByMatchId(new MatchId(groupId, otherUserId, userId));
+        }
+        if (matchOptional.isPresent()) {
+            return matchOptional.get();
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                String.format("Bad request - groupId: %s, userId: %s, otherUserId: %s",
+                        groupId, userId, otherUserId));
     }
 }

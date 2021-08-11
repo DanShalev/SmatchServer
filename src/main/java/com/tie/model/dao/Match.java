@@ -26,4 +26,9 @@ public class Match {
     @Column(name = "second_user_like")
     private Boolean secondUserLike;
 
+    @Column(name = "first_user_is_typing")
+    private Boolean firstUserIsTyping;
+
+    @Column(name = "second_user_is_typing")
+    private Boolean secondUserIsTyping;
 }

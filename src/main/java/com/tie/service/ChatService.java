@@ -1,10 +1,12 @@
 package com.tie.service;
 
+import com.tie.model.dao.Match;
 import com.tie.model.dao.Message;
 import com.tie.model.dao.User;
 import com.tie.model.dto.GroupDTO;
 import com.tie.model.dto.MessageDTO;
 import com.tie.repository.ChatRepository;
+import com.tie.repository.MatchRepository;
 import io.github.jav.exposerversdk.ExpoPushMessage;
 import io.github.jav.exposerversdk.PushClientException;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +25,10 @@ import java.util.stream.Collectors;
 public class ChatService {
 
     private final ChatRepository chatRepository;
+    private final MatchRepository matchRepository;
     private final UserService userService;
     private final SubscriptionService subscriptionService;
+    private final MatchService matchService;
 
     public void sendMessage(MessageDTO messageDTO) throws PushClientException, InterruptedException {
         if (messageDTO.getSenderId().equals(messageDTO.getReceiverId()) || messageDTO.getContent() == null
@@ -72,5 +76,22 @@ public class ChatService {
                         .stream()
                         .filter(map -> !map.getValue().isEmpty())
                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))));
+    }
+
+    public void setTypingStatus(String groupId, String userId, String otherUserId, Boolean isTyping) {
+        Match match = matchService.getMatchFromIds(groupId, userId, otherUserId);
+        if (userId.compareTo(otherUserId) < 0) {
+            match.setFirstUserIsTyping(isTyping);
+        } else {
+            match.setSecondUserIsTyping(isTyping);
+        }
+        matchRepository.save(match);
+    }
+
+    public Boolean getTypingStatus(String groupId, String userId, String otherUserId) {
+        Match match = matchService.getMatchFromIds(groupId, userId, otherUserId);
+        return (userId.compareTo(otherUserId) < 0)
+                ? match.getSecondUserIsTyping()
+                : match.getFirstUserIsTyping();
     }
 }
