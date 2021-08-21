@@ -1,4 +1,4 @@
-package com.tie.Utils;
+package com.tie.utils;
 
 public class Constants {
 

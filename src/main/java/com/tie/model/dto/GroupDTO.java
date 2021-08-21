@@ -14,6 +14,7 @@ public class GroupDTO {
     private String description;
     private String numberOfMembers;
     private String avatar;
+    private String category;
     private Map<Integer, String> fields;
 
 }

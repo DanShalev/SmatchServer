@@ -63,5 +63,9 @@ public class GroupController {
         return groupService.getUserGroupFields(groupId, userId);
     }
 
+    @GetMapping("/categories")
+    public List<String> getCategories(){
+        return groupService.getCategories();
+    }
 
 }
