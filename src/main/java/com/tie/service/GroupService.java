@@ -1,6 +1,7 @@
 package com.tie.service;
 
-import com.tie.Utils.GroupUtils;
+import com.tie.enums.Categories;
+import com.tie.utils.GroupUtils;
 import com.tie.model.dao.*;
 import com.tie.model.dto.GroupDTO;
 import com.tie.repository.GroupFieldRepository;
@@ -10,7 +11,6 @@ import com.tie.repository.SubscriptionRepository;
 import com.tie.repository.UserRepository;
 import com.tie.model.dto.UserFieldDTO;
 import com.tie.repository.*;
-import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
@@ -164,7 +164,9 @@ public class GroupService {
         return user;
     }
 
-//    private static byte[] decode(byte[] image) {
-//        return Base64.getDecoder().decode(image);
-//    }
+    public List<String> getCategories(){
+        return Categories.getValues();
+    }
+
+
 }

@@ -1,6 +1,6 @@
 package com.tie.service;
 
-import com.tie.Utils.GroupUtils;
+import com.tie.utils.GroupUtils;
 import com.tie.model.dao.Group;
 import com.tie.model.dao.Subscription;
 import com.tie.model.dao.SubscriptionId;

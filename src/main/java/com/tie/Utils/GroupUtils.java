@@ -1,4 +1,4 @@
-package com.tie.Utils;
+package com.tie.utils;
 
 import com.tie.model.dao.Group;
 import com.tie.model.dto.GroupDTO;
@@ -19,6 +19,6 @@ public class GroupUtils {
         Map<Integer, String> fields = groupFieldRepository.findAllByGroupId(group.getId()).stream()
                 .collect(Collectors.toMap(groupField -> groupField.getGroupFieldId().getFieldId(),
                         groupField -> groupField.getGroupFieldId().getFieldName()));
-        return new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getNumberOfMembers(), group.getAvatar(), fields);
+        return new GroupDTO(group.getId(), group.getName(), group.getDescription(), group.getNumberOfMembers(), group.getAvatar(), group.getCategory(), fields);
     }
 }

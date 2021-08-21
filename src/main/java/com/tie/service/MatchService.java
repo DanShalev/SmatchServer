@@ -1,6 +1,6 @@
 package com.tie.service;
 
-import com.tie.Utils.Constants;
+import com.tie.utils.Constants;
 import com.tie.model.dao.Match;
 import com.tie.model.dao.MatchId;
 import com.tie.repository.MatchRepository;
