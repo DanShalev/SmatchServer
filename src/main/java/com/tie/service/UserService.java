@@ -61,10 +61,17 @@ public class UserService {
         User user = verifyUserExists(userId);
 
         switch (imageNum) {
-            case 1 -> user.setImage1(image);
-            case 2 -> user.setImage2(image);
-            case 3 -> user.setImage3(image);
-            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            case 1:
+                user.setImage1(image);
+                break;
+            case 2:
+                user.setImage2(image);
+                break;
+            case 3:
+                user.setImage3(image);
+                break;
+            default:
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                                          String.format("Invalid Image Location (%s)", imageNum));
         }
         userRepository.save(user);
@@ -75,17 +82,20 @@ public class UserService {
 
         // Delete image and shift image location accordingly
         switch (imageNum) {
-            case 1 -> {
+            case 1:
                 user.setImage1(user.getImage2());
                 user.setImage2(user.getImage3());
                 user.setImage3(null);
-            }
-            case 2 -> {
+                break;
+            case 2:
                 user.setImage2(user.getImage3());
                 user.setImage3(null);
-            }
-            case 3 -> user.setImage3(null);
-            default -> throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                break;
+            case 3:
+                user.setImage3(null);
+                break;
+            default:
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Invalid Image Location (%s)", imageNum));
         }
         userRepository.save(user);
