@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,10 +47,8 @@ public class ChatService {
         User sender = userService.verifyUserExists(message.getMessageId().getSenderId());
 
         String token = receiver.getPushNotificationToken();
-        String title = "Smatch";
-        String messageBody = sender.getName() + " sent you a new message";
-
-        ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(token, title, messageBody, message.getMessageId());
+        String senderName = sender.getName();
+        ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(token, senderName, message);
         NotificationService.push(expoPushMessage);
         chatRepository.save(message);
     }
@@ -93,5 +92,10 @@ public class ChatService {
         return (userId.compareTo(otherUserId) < 0)
                 ? match.getSecondUserIsTyping()
                 : match.getFirstUserIsTyping();
+    }
+
+    public void deleteMessage(String messageId, String userId){
+        userService.verifyUserExists(userId);
+        chatRepository.deleteByMessageId(messageId, userId);
     }
 }

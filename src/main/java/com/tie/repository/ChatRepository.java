@@ -28,4 +28,13 @@ public interface ChatRepository extends JpaRepository<Message, MessageId> {
     @Modifying
     @Transactional
     void deleteAllChatsByGroupAndUserId(String groupId, String userId, String senderId);
+
+    @Query(value = "DELETE " +
+            "FROM chats " +
+            "WHERE unique_id = :messageId " +
+            "AND receiver_id = :userId ",
+            nativeQuery = true)
+    @Modifying
+    @Transactional
+    void deleteByMessageId(String messageId, String userId);
 }

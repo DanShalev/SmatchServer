@@ -1,6 +1,6 @@
 package com.tie.service;
 
-import com.tie.model.dao.MessageId;
+import com.tie.model.dao.Message;
 import io.github.jav.exposerversdk.ExpoPushMessage;
 import io.github.jav.exposerversdk.PushClient;
 import io.github.jav.exposerversdk.PushClientException;
@@ -18,22 +18,23 @@ import java.util.Map;
 @Slf4j
 public class NotificationService {
 
-    public static ExpoPushMessage createPushMessage(String token, String title, String message) {
+    public static ExpoPushMessage createExpoMessage(String token, String senderName) {
         ExpoPushMessage expoPushMessage = new ExpoPushMessage();
         expoPushMessage.getTo().add(token);
-        expoPushMessage.setTitle(title);
-        expoPushMessage.setBody(message);
+        expoPushMessage.setTitle("Smatch");
+        expoPushMessage.setBody(senderName + " sent you a new message!");
         return expoPushMessage;
     }
 
-    public static ExpoPushMessage createPushMessage(String token, String title, String message, MessageId messageId) {
-        ExpoPushMessage expoPushMessage = createPushMessage(token, title, message);
-        Map<String, Object> m = new HashMap<>();
-        m.put("groupId", messageId.getGroupId());
-        m.put("otherUserId", messageId.getSenderId());
-        m.put("userId", messageId.getReceiverId());
-        expoPushMessage.setData(m);
-
+    public static ExpoPushMessage createPushMessage(String token, String senderName, Message message) {
+        ExpoPushMessage expoPushMessage = createExpoMessage(token, senderName);
+        Map<String, Object> data = new HashMap<>();
+        data.put("messageId",message.getMessageId().getUniqueId());
+        data.put("groupId", message.getMessageId().getGroupId());
+        data.put("otherUserId", message.getMessageId().getSenderId());
+        data.put("message", message.getMessage());
+        data.put("type", "chat");
+        expoPushMessage.setData(data);
         return expoPushMessage;
     }
 
