@@ -22,9 +22,9 @@ public class ChatController {
         chatService.sendMessage(messageDTO);
     }
 
-    @GetMapping("/get/{groupId}/{otherUserId}")
-    public List<Message> getConversationMessages(@PathVariable String groupId, @PathVariable String otherUserId, @RequestHeader String userId) {
-        return chatService.getConversationMessages(groupId, userId, otherUserId);
+    @DeleteMapping("/delete/{messageId}")
+    public void deleteMessage(@PathVariable String messageId, @RequestHeader String userId) {
+        chatService.deleteMessage(messageId, userId);
     }
 
     @GetMapping("/get")

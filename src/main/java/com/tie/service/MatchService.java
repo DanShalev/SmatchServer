@@ -50,8 +50,9 @@ public class MatchService {
             }
         }
         if (isMatch) {
-            ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(userService.getUserToken(otherUserId), Constants.SMATCH_TITLE, "");
-            NotificationService.push(expoPushMessage);
+            //TODO declare match type
+//            ExpoPushMessage expoPushMessage = NotificationService.createPushMessage(userService.getUserToken(otherUserId), Constants.SMATCH_TITLE, "");
+//            NotificationService.push(expoPushMessage);
         }
         return isMatch;
     }
