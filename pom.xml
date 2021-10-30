@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>smatchServer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tie</name>
-	<description>The server for tie</description>
+	<name>smatch</name>
+	<description>smatch server</description>
 
 	<properties>
 		<java.version>14</java.version>
@@ -21,12 +21,19 @@
 		<testcontainers.version>1.15.3</testcontainers.version>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>ssh-aws-ec2</id>
+			<name>aws-ec2</name>
+			<url>scpexe://ec2-18-188-126-103.us-east-2.compute.amazonaws.com/home/workspace</url>
+		</repository>
+	</distributionManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -94,10 +101,25 @@
 	</dependencies>
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>3.4.3</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<outputDirectory>./target</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
