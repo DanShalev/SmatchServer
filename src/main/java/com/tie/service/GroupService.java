@@ -67,14 +67,14 @@ public class GroupService {
     }
 
     public List<GroupDTO> getAllGroups() {
-        return groupRepository.findAll().stream().map(groupUtils::convertGroupToGroupDto
+        return groupRepository.findAll().stream().map(groupUtils::toGroupDTO
         ).collect(Collectors.toList());
     }
 
     public GroupDTO getGroupById(String groupId, String userId) {
         verifyUserExists(userId);
         Group group = verifyGroupExists(groupId);
-        return groupUtils.convertGroupToGroupDto(group);
+        return groupUtils.toGroupDTO(group);
     }
 
     Group verifyGroupExists(String groupId) {
