@@ -15,7 +15,7 @@ public class GroupUtils {
 
     private final GroupFieldRepository groupFieldRepository;
 
-    public GroupDTO convertGroupToGroupDto(Group group) {
+    public GroupDTO toGroupDTO(Group group) {
         Map<Integer, String> fields = groupFieldRepository.findAllByGroupId(group.getId()).stream()
                 .collect(Collectors.toMap(groupField -> groupField.getGroupFieldId().getFieldId(),
                         groupField -> groupField.getGroupFieldId().getFieldName()));

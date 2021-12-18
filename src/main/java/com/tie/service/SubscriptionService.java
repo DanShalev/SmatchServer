@@ -36,7 +36,7 @@ public class SubscriptionService {
         userService.verifyUserExists(userId);
         return subscriptionRepository.findSubscriptionsByUserId(userId).stream()
                 .map(Subscription::getGroup)
-                .map(groupUtils::convertGroupToGroupDto)
+                .map(groupUtils::toGroupDTO)
                 .collect(Collectors.toList());
     }
 
